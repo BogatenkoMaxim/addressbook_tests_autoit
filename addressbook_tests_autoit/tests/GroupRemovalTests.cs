@@ -10,17 +10,14 @@ namespace addressbook_tests_autoit
         [Test]
         public void TestGroupRemove()
         {
+            app.Groups.ChekingGroups();
+
             List<GroupData> oldGroups = app.Groups.GetGroupList();
 
-            /*GroupData newGroup = new GroupData()
-            {
-                Name = "Sova"
-            };
-            */
-            app.Groups.Remove(oldGroups[0]);
+            app.Groups.Remove(1);
 
             List<GroupData> newGroups = app.Groups.GetGroupList();
-            oldGroups.Add(newGroup);
+            oldGroups.Remove(oldGroups[1]);
             oldGroups.Sort();
             newGroups.Sort();
             Assert.AreEqual(oldGroups, newGroups);

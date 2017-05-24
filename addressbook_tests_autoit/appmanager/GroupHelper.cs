@@ -8,6 +8,7 @@ namespace addressbook_tests_autoit
     public class GroupHelper : HelperBase
     {
         public static string GROUPWINTITLE = "Group editor";
+        public static string GROUPDELETE = "Delete group";
 
         public GroupHelper(ApplicationManager manager) : base(manager)
         {
@@ -25,10 +26,15 @@ namespace addressbook_tests_autoit
 
         }
 
-        public void Remove(GroupData newGroup)
+        public void Remove(int index)
         {
             OpenGroupsDialog();
-
+            aux.ControlTreeView(GROUPWINTITLE, "", "WindowsForms10.SysTreeView32.app.0.2c908d51",
+                "Select", "#0|#" + index, "");
+            aux.ControlClick(GROUPWINTITLE, "", "WindowsForms10.BUTTON.app.0.2c908d51");
+            aux.WinWait(GROUPDELETE);
+            aux.ControlClick(GROUPDELETE, "", "WindowsForms10.BUTTON.app.0.2c908d53");
+            aux.WinWait(GROUPWINTITLE);
             CloseGroupsDialog();
         }
 
@@ -62,6 +68,21 @@ namespace addressbook_tests_autoit
             }
             CloseGroupsDialog();
             return list;
+        }
+
+// Проверка групп в списке
+        public void ChekingGroups()
+        {
+            List<GroupData> oldGroups = manager.Groups.GetGroupList();
+            if (oldGroups.Count == 1)
+            {
+                GroupData newGroup = new GroupData()
+                {
+                    Name = "Pantera"
+                };
+
+                manager.Groups.Add(newGroup);
+            }
         }
     }
 }
